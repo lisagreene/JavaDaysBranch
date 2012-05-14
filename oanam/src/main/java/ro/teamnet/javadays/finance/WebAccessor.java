@@ -1,4 +1,4 @@
-package ro.teamnet.javadays.meet1;
+package ro.teamnet.javadays.finance;
 
 import java.net.URL;
 

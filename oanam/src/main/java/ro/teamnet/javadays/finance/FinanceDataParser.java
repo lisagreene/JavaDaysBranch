@@ -1,4 +1,6 @@
-package ro.teamnet.javadays.meet1;
+package ro.teamnet.javadays.finance;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,5 +10,5 @@ package ro.teamnet.javadays.meet1;
  * To change this template use File | Settings | File Templates.
  */
 public interface FinanceDataParser {
-    FinanceData parse(String content);
+    List<FinanceData> parse(String content);
 }

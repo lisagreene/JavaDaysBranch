@@ -1,10 +1,13 @@
-package ro.teamnet.javadays.meet1;
+package ro.teamnet.javadays.finance;
 
-import com.google.common.base.Preconditions;
-
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
+
+import ro.teamnet.javadays.finance.dao.*;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +19,7 @@ import java.net.URL;
 public class YahooFinance implements FinanceService {
     static final String YAHOO_FINANCE_TEMPLATE_URL =
             "http://finance.yahoo.com/d/quotes.csv?s=%s&f=%s";
+    private static final File YAHOO_FINANCE_HOME = new File("D:/yahoo/finance/home");
 
 
     private final WebAccessor webAccessor;
@@ -23,6 +27,8 @@ public class YahooFinance implements FinanceService {
     private final FinanceDataParser financeDataParser;
     private static final FinanceDataParser DEFAULT_YAHOO_FINANCE_DATA_PARSER =
             new YahooFinanceDataParser();
+    
+
 
     public YahooFinance(WebAccessor webAccessor) {
         this.webAccessor = webAccessor;
@@ -35,18 +41,16 @@ public class YahooFinance implements FinanceService {
     }
 
     @Override
-    public FinanceData getStockData(String symbol, String stat) throws FinanceDataUnavailableException {
-        final URL url = urlFrom(symbol, stat);
+    public List<FinanceData> getStockData(StockInfo stockInfo) throws FinanceDataUnavailableException {
+        final URL url = urlFrom(stockInfo);
         final String content = webAccessor.getContent(url);
-        Preconditions.checkArgument(symbol!=null && !symbol.trim().isEmpty(),"You must pass a non empty symbol");
-        Preconditions.checkArgument(stat!=null && !stat.trim().isEmpty(),"You must pass a non empty stat");
-        return financeDataParser.parse(content);
+        List<FinanceData> financeData = financeDataParser.parse(content);
+        return financeData;
     }
 
-    protected URL urlFrom(String symbol, String stat) {
-
+    protected URL urlFrom(StockInfo stockInfo) {
         try {
-          return URI.create(String.format(YAHOO_FINANCE_TEMPLATE_URL, symbol, stat)).toURL();
+          return URI.create(String.format(YAHOO_FINANCE_TEMPLATE_URL, stockInfo.getSymbol(), stockInfo.getStat())).toURL();
         } catch (MalformedURLException e) {
            throw new WebAccessException(e);
         }
@@ -61,9 +65,14 @@ public class YahooFinance implements FinanceService {
             }
         };*/
         YahooFinance yahooFinance=new YahooFinance(new DefaultWebAccessor());
-        FinanceData financeData=yahooFinance.getStockData("GOOG","l1c1v");
-        System.out.println(financeData);
-
+        final StockInfoDao stockInfoDao = new FlatFileStockInfoDao(YAHOO_FINANCE_HOME);
+        //String[] symbols = new String[]{"YHOO","AAPL","GOOG","MSFT"};
+        StockInfo stockInfo = new StockInfo.Builder().symbol("YHOO").symbol("GOOG").symbol("AAPL").symbol("MSFT").build();
+        List<FinanceData> financeDataList = yahooFinance.getStockData(stockInfo);
+        for (FinanceData financeData:financeDataList){
+            System.out.println(financeData);
+            stockInfoDao.save(financeData);
+        }
     }
 
 }

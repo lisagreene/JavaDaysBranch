@@ -1,4 +1,4 @@
-package ro.teamnet.javadays.meet1.dao;
+package ro.teamnet.javadays.finance.dao;
 
 /**
  * Created with IntelliJ IDEA.

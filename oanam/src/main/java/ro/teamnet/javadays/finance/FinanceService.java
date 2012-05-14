@@ -1,4 +1,6 @@
-package ro.teamnet.javadays.meet1;
+package ro.teamnet.javadays.finance;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,6 +10,6 @@ package ro.teamnet.javadays.meet1;
  * To change this template use File | Settings | File Templates.
  */
 public interface FinanceService {
-    FinanceData getStockData(String symbol, String stat) throws FinanceDataUnavailableException;
+    List<FinanceData> getStockData(StockInfo stockInfo) throws FinanceDataUnavailableException;
 
 }

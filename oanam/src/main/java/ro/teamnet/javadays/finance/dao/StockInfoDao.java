@@ -1,6 +1,6 @@
-package ro.teamnet.javadays.meet1.dao;
+package ro.teamnet.javadays.finance.dao;
 
-import ro.teamnet.javadays.meet1.FinanceData;
+import ro.teamnet.javadays.finance.FinanceData;
 
 /**
  * Created with IntelliJ IDEA.

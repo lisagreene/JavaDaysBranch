@@ -1,6 +1,10 @@
-package ro.teamnet.javadays.meet1;
+package ro.teamnet.javadays.finance;
 
 import com.google.common.base.Preconditions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,14 +39,22 @@ public class YahooFinanceDataParser implements FinanceDataParser {
     YahooFinanceDataParser() {}
 
     @Override
-    public FinanceData parse(String content) {
-        FinanceData data = new FinanceData();
+    public List<FinanceData> parse(String content) {
         final String s = Preconditions.checkNotNull(content);
-        String[] recivedData=s.split(",");
-        data.setPrice(recivedData[0]);
-        data.setChange(recivedData[1]);
-        data.setVolume(recivedData[2]);
+        List<FinanceData> financeDataList = new ArrayList<FinanceData>();
 
-        return data;  //To change body of implemented methods use File | Settings | File Templates.
+        for (String line :  s.split("\n")) {
+            line = line.trim();
+            FinanceData data = new FinanceData();
+            String[] receivedData = line.split(",");
+            data.setName(receivedData[0]);
+            data.setSymbol(receivedData[1]);
+            data.setPrice(receivedData[2]);
+            data.setChange(receivedData[3]);
+            data.setVolume(receivedData[4]);
+            financeDataList.add(data);
+        }
+
+        return financeDataList;
     }
 }

@@ -1,4 +1,4 @@
-package ro.teamnet.javadays.meet1;
+package ro.teamnet.javadays.finance;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,6 +9,7 @@ package ro.teamnet.javadays.meet1;
  */
 public class FinanceData {
 
+    private String name;
     private String symbol;
     private String price;
     private String change;
@@ -46,12 +47,16 @@ public class FinanceData {
         return this.volume;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return "FinanceData{" +
-                "price='" + price + '\'' +
-                ", change='" + change + '\'' +
-                ", volume='" + volume + '\'' +
-                '}';
+        return String.format("FinanceData{name='%s', symbol='%s', price='%s', change='%s', volume='%s'}", name, symbol, price, change, volume);
     }
 }

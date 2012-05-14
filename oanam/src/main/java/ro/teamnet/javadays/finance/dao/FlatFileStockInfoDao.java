@@ -1,7 +1,7 @@
-package ro.teamnet.javadays.meet1.dao;
+package ro.teamnet.javadays.finance.dao;
 
 import com.google.common.base.Preconditions;
-import ro.teamnet.javadays.meet1.FinanceData;
+import ro.teamnet.javadays.finance.FinanceData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,14 +20,14 @@ public class FlatFileStockInfoDao implements StockInfoDao {
 
     private final File rootDir;
 
-    private static final String STOCK_HISTORY_FILE = "stock_info_history.txt";
+    private static final String STOCK_HISTORY_FILE = "stock_info_history.csv";
 
     private final File historyFile;
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     private static final String STOCK_INFO_RECORD_FORMAT =
-            "%s,%s,%s,%s,%s";
+            "%s,%s,%s,%s,%s,%s\n";
 
     public FlatFileStockInfoDao(File rootDir) {
 
@@ -52,9 +52,11 @@ public class FlatFileStockInfoDao implements StockInfoDao {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(this.historyFile, true);
-            fileWriter.write(String.format(STOCK_INFO_RECORD_FORMAT,
-                    dateFormat.format(new Date()), financeData.getSymbol(), financeData.getPrice(),
-                    financeData.getChange(), financeData.getVolume()));
+            String data = String.format(STOCK_INFO_RECORD_FORMAT,
+                    dateFormat.format(new Date()), financeData.getSymbol(),
+                    financeData.getPrice(), financeData.getChange(),
+                    financeData.getVolume(), financeData.getName());
+            fileWriter.write(data);
 
             fileWriter.flush();
             success = true;

@@ -1,5 +1,8 @@
 package ro.teamnet.javadays.meet1;
 
+import ro.teamnet.javadays.finance.WebAccessException;
+import ro.teamnet.javadays.finance.WebAccessor;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
